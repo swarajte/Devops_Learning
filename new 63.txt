@@ -1,0 +1,8 @@
+
+scp -i aws-word.pem aws-word.pem ubuntu@98.94.99.255:/home/ubuntu/
+
+
+python3 -m http.server 8000
+ssh -i aws-word.pem ubuntu@10.0.140.174
+
+ssh -i aws-word.pem ubuntu@10.0.154.20

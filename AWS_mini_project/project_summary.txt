@@ -1,0 +1,168 @@
+WS MINI PROJECT – SUMMARY OF LEARNINGS
+
+1. VPC AND NETWORKING BASICS
+
+VPC is a private network inside AWS
+
+CIDR block (example: 172.16.0.0/16) defines IP range of the VPC
+
+VPC is divided into public and private subnets
+
+Subnets are spread across multiple Availability Zones
+
+
+
+
+
+2. PUBLIC AND PRIVATE SUBNETS
+
+Public subnets host internet-facing resources
+
+Private subnets host backend application servers
+
+Subnet type depends on route table, not subnet name
+
+
+
+
+3. INTERNET GATEWAY AND ROUTE TABLES
+
+Internet Gateway connects VPC to the internet
+
+Route tables control traffic flow
+
+Public subnet route: 0.0.0.0/0 → Internet Gateway
+
+Private subnet route: 0.0.0.0/0 → NAT Gateway
+
+
+
+
+
+
+4. NAT GATEWAY AND OUTBOUND ACCESS
+
+Private EC2 cannot access internet directly
+
+NAT Gateway allows outbound internet access
+
+NAT Gateway must be in a public subnet
+
+One NAT Gateway per AZ improves availability
+
+NAT Gateways and Elastic IPs are billable
+
+
+
+
+5. SECURITY DESIGN
+
+Security Groups act as instance firewalls
+
+Private EC2 instances are not internet-accessible
+
+Bastion Host is used for SSH access
+
+SSH to private EC2 is done via bastion using private IP
+
+
+
+
+
+
+6. LOAD BALANCING
+
+Application Load Balancer is placed in public subnets
+
+ALB is the single entry point for users
+
+Traffic flow: User → ALB → Target Group → EC2
+
+EC2 accepts traffic only from ALB
+
+
+
+
+7. AUTO SCALING AND EC2 MANAGEMENT
+
+Launch Templates replace Launch Configurations
+
+Launch Template defines EC2 configuration
+
+Auto Scaling Group manages EC2 lifecycle
+
+ASG handles scaling, health checks, and replacement
+
+ASG manages only instances it creates
+
+
+
+
+
+8. HIGH AVAILABILITY
+
+Resources are deployed across two AZs
+
+ALB, ASG, and NAT prevent single point of failure
+
+Application continues running if one AZ fails
+
+
+
+
+
+9. AWS COST MANAGEMENT
+
+Running resources generate cost
+
+Defined but unused resources are free
+
+Billable services identified:
+
+EC2 instances
+
+NAT Gateways
+
+Load Balancers
+
+Elastic IPs
+
+ASG can be paused by setting min, desired, max to 0
+
+
+
+
+
+10. PROJECT CLEANUP STRATEGY
+
+Auto Scaling Group capacity set to 0
+
+All EC2 instances terminated
+
+NAT Gateways deleted
+
+Load Balancer deleted
+
+Elastic IPs released
+
+Network configuration preserved
+
+
+
+
+
+
+11. KEY TAKEAWAYS
+
+AWS uses multiple services working together
+
+Security is layered, not single setting
+
+Cost control is critical
+
+Documentation is important
+
+Learning happens by building and cleaning up
+
+PROJECT ONE-LINE SUMMARY
+built a secure and highly available AWS architecture using VPC, private EC2 instances, Application Load Balancer, Auto Scaling Group, NAT Gateway, and cost control practices.

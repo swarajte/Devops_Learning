@@ -1,0 +1,8 @@
+This project shows how to design a production-ready network in AWS.
+
+A VPC is created to act as a private network. Servers are deployed in two different Availability Zones so that the application keeps running even if one zone fails. Auto Scaling is used to automatically add or remove servers based on traffic, and an Application Load Balancer distributes incoming requests across the servers.
+
+For better security, the servers are placed in private subnets, so they cannot be accessed directly from the internet. All user traffic reaches the servers only through the load balancer.
+
+Since servers in private subnets still need internet access for updates and external services, a NAT Gateway is used. To avoid a single point of failure, a NAT Gateway is created in each Availability Zone.
+
