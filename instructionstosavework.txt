@@ -1,0 +1,25 @@
+git config --global user.name "swarajte"
+git config --global user.email "swarajtelkhade@gmail.com"
+
+
+git remote add origin https://github.com/swarajte/Devops_Learning.git
+
+
+https://github.com/swarajte/Devops_Learning.git
+
+swarajte
+
+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
+
+
+Before you start working
+
+git pull
+
+
+After you make changes
+
+git add .
+git commit -m "what you changed"
+git push
+
