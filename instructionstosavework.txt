@@ -23,3 +23,9 @@ git add .
 git commit -m "what you changed"
 git push
 
+
+for adding folder in repo
+git add demo/README.md
+git commit -m "Add demo folder with README"
+git push
+
