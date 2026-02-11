@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Simple Free Tier EC2 Instance
+
+Resources:
+
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro   # Free tier eligible
+      KeyName: aws-word        # Your existing key pair name
+      ImageId: ami-0b6c6ebed2801a5cb  # Ubuntu Server 24.04 LTS (HVM), SSD Volume Type
+      SecurityGroupIds:
+        - !Ref MySecurityGroup
+      Tags:
+        - Key: Name
+          Value: CFT-FreeTier-Instance
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+Outputs:
+  InstancePublicIP:
+    Description: Public IP of EC2 instance
+    Value: !GetAtt MyEC2Instance.PublicIp
