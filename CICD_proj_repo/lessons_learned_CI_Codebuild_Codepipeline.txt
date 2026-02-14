@@ -1,0 +1,82 @@
+I Implementation Summary – GitHub + CodePipeline + CodeBuild
+Goal
+
+Build a simple CI pipeline that:
+
+Pulls code from GitHub
+
+Builds a Docker image
+
+Pushes image to Docker Hub automatically
+
+
+
+
+Architecture Flow
+
+GGitHub → CodePipeline → CodeBuild → Docker Hub
+
+
+What We Did
+
+1.Forked the public repo into my own GitHub account.
+
+
+2.Created a Docker Hub account.
+
+Generated Docker Hub access token (not password).
+
+Stored credentials securely in AWS Parameter Store:
+
+/myapp/docker-credentials/username
+
+/myapp/docker-credentials/password
+
+/myapp/docker-registry/url
+
+
+3. Created CodeBuild project:
+
+Source: GitHub
+
+Runtime: Python 3.11
+
+Enabled privileged mode (for Docker)
+
+Added docker login in buildspec to push images.
+
+
+
+4.Created CodePipeline:
+
+Stage 1: Source (GitHub)
+
+Stage 2: Build (CodeBuild)
+
+Now every commit to GitHub triggers:
+
+
+
+5.Pipeline execution
+
+CodeBuild run
+
+Docker image build
+
+Image push to Docker Hub
+
+
+
+
+
+Important Learnings
+
+Docker login is required before pushing images.
+
+Use access token, not account password.
+
+Parameter Store is used to securely store secrets.
+
+CodePipeline orchestrates.
+
+CodeBuild executes commands.
