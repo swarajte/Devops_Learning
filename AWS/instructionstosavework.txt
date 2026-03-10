@@ -20,7 +20,7 @@ git pull
 After you make changes
 
 git add .
-git commit -m "AWS cost estimation project"
+git commit -m "pushing aws cli, docker installation"
 git push
 
 
