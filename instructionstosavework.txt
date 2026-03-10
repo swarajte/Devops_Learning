@@ -20,7 +20,7 @@ git pull
 After you make changes
 
 git add .
-git commit -m "what you changed"
+git commit -m "AWS cost estimation project"
 git push
 
 
@@ -41,3 +41,42 @@ test-user-501
 test-user-501-at-026090538890
 
 A9CHRjOKf8bkKAl2O9uT2KinXDpECju+TaxcAn5+BnrMPIQUSRhebFJRj7Q=	
+
+
+wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install
+
+
+
+026090538890
+
+test-user-501
+
+7wDZZ088
+
+
+AWS CLI Installation on ec2 :
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo apt install unzip -y
+unzip awscliv2.zip
+sudo ./aws/install
+aws --version
+```
+
+---
+
+If the last command prints something like:
+```
+aws-cli/2.x.x Python/3.x.x Linux/x86_64
+
+
+
+Installing docker on ec2 :
+
+sudo apt update -y
+sudo apt install docker.io -y
+sudo service docker start
+sudo usermod -a -G docker ubuntu
+
+
+The last command adds your user to docker group so you don't need sudo every time.
