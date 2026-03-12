@@ -86,24 +86,6 @@ The last command adds your user to docker group so you don't need sudo every tim
 
 
 
-
-mv AWS_Cost_estimation_project ../
-mv AWS_mini_project ../
-mv CFT ../
-mv CICD_proj_repo ../
-mv README.md ../
-mv S3_bukcet ../
-mv aws-word.pem ../
-mv aws_cli_configuration_on_ec2.txt ../
-mv demo ../
-mv demo-repo-cc ../
-mv demo.txt ../
-mv docker_installation_on_ec2.txt ../
-mv index.html ../
-mv instructionstosavework.txt ../
-mv steps_to_push_docker_image_in_ECR_AWS.txt ../
-
-
 testuserswaraj 
 
 docker build -t testuserswaraj/my-first-docker-image:latest .
