@@ -1,0 +1,104 @@
+Multi-Stage Docker Build Summary
+What is Multi-Stage Docker Build
+
+A multi-stage build is a Docker technique where multiple stages are used in a single Dockerfile to separate the build environment from the runtime environment.
+
+The main goal is to create smaller and cleaner Docker images.
+
+Why Multi-Stage Builds Are Used
+
+Normally, when building an application we need:
+
+compilers
+
+build tools
+
+package managers
+
+source code
+
+But these tools are not needed when the application is running.
+
+Multi-stage builds allow us to:
+
+Use heavy tools to build the application
+↓
+Copy only the final application to a smaller image
+
+Benefits:
+
+Smaller image size
+
+Better security
+
+Faster deployments
+
+Simple Workflow
+Source Code
+     │
+          ▼
+	  Stage 1 (Build Stage)
+	  Install build tools
+	  Compile the application
+	       │
+	            ▼
+		    Binary / Final Application
+		         │
+			      ▼
+			      Stage 2 (Runtime Stage)
+			      Copy only the final application
+			           │
+				        ▼
+					Small and lightweight container
+					Example Dockerfile (Multi-Stage)
+					FROM golang AS builder
+
+					WORKDIR /app
+					COPY . .
+
+					RUN go build -o myapp
+
+					FROM scratch
+
+					COPY --from=builder /app/myapp /myapp
+
+					ENTRYPOINT ["/myapp"]
+					Explanation
+
+					Stage 1:
+
+					Install Go compiler
+					Compile the application
+					Generate binary
+
+					Stage 2:
+
+					Start with empty image
+					Copy compiled binary only
+					Run the application
+					What COPY --from Does
+					COPY --from=builder /app/myapp /myapp
+
+					This copies files from another stage inside the Dockerfile.
+
+					In this case:
+
+					builder stage → final image
+					What is scratch
+
+					scratch is an empty Docker image.
+
+					It contains:
+
+					no OS
+					no shell
+					no package manager
+
+					Only the files you copy into it.
+
+					Key Idea to Remember
+					Stage 1 → Build the application
+					Stage 2 → Run the application
+
+					Multi-stage builds help remove unnecessary build tools from the final image, making containers smaller and more secure.
+
