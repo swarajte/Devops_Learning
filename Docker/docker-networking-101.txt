@@ -1,0 +1,224 @@
+
+cker Networking – Learning Summary
+Overview
+
+Docker networking allows containers to communicate with each other, the host machine, and external networks (internet). Each container is connected to a network interface that enables network communication.
+
+Basic Networking Terminology
+IP Address
+
+An IP address uniquely identifies a device or container on a network.
+
+Example:
+
+172.17.0.2
+
+Docker assigns an IP to each container.
+
+Port
+
+A port allows services to communicate over a network.
+
+Example:
+
+Port 80 → Web server
+Port 22 → SSH
+Port 3306 → MySQL
+
+Example container port mapping:
+
+docker run -p 8000:8000 image
+
+Meaning:
+
+Host Port 8000 → Container Port 8000
+Network Interface
+
+A network interface allows a device to connect to a network.
+
+Containers use virtual network interfaces created by Docker.
+
+Bridge
+
+A bridge network connects multiple containers so they can communicate.
+
+Docker creates a default bridge called:
+
+docker0
+Docker Networking Architecture
+Container
+    │
+        ▼
+	veth pair (virtual ethernet)
+	    │
+	        ▼
+		docker0 bridge
+		    │
+		        ▼
+			Host Network Interface
+			    │
+			        ▼
+				Internet
+				Container → Internet Flow
+
+				When a container sends traffic to the internet:
+
+				Container
+				   │
+				      ▼
+				      veth (virtual network interface)
+				         │
+					    ▼
+					    docker0 bridge
+					       │
+					          ▼
+						  Host network interface (eth0)
+						     │
+						        ▼
+							NAT translation
+							   │
+							      ▼
+							      Internet
+
+							      Explanation:
+
+							      Container sends request
+
+							      Request goes through veth pair
+
+							      Reaches docker0 bridge
+
+							      Host performs NAT (Network Address Translation)
+
+							      Traffic goes to internet
+
+							      Default Docker Network (Bridge)
+
+							      Docker automatically creates the bridge network.
+
+							      Example:
+
+							      docker run -d --name login nginx
+							      docker run -d --name logout nginx
+
+							      Both containers are connected to the bridge network.
+
+							      Containers can communicate using IP addresses.
+
+							      Container Communication
+
+							      Check container IP:
+
+							      docker inspect container_name
+
+							      Example communication:
+
+							      login → ping → logout
+							      User-Defined Networks
+
+							      Custom networks allow better container communication.
+
+							      Create network:
+
+							      docker network create secure-network
+
+							      Run containers in the network:
+
+							      docker run -d --name login --network secure-network nginx
+							      docker run -d --name logout --network secure-network nginx
+
+							      Benefits:
+
+							      containers communicate using container names
+
+							      built-in Docker DNS
+
+							      better network isolation
+
+							      Example:
+
+							      login → ping logout
+							      Container Isolation
+
+							      Containers not connected to the same network cannot communicate.
+
+							      Example:
+
+							      secure-network
+							            │
+								     login ── logout
+
+								     payment container
+								     (not connected)
+
+								     The payment container remains isolated.
+
+								     Host Network
+
+								     Host networking allows the container to use the host machine network directly.
+
+								     Example:
+
+								     docker run --network host nginx
+
+								     Characteristics:
+
+								     container uses host IP
+
+								     no port mapping required
+
+								     container ports directly bind to host ports
+
+								     Example:
+
+								     EC2-IP:80 → container service
+								     Docker Network Types
+								     Network Type	Description
+								     Bridge	Default Docker network
+								     Host	Container shares host network
+								     None	Container has no network
+								     User-defined	Custom network for container communication
+								     Commands Practiced
+
+								     List networks:
+
+								     docker network ls
+
+								     Create network:
+
+								     docker network create secure-network
+
+								     Inspect network:
+
+								     docker network inspect secure-network
+
+								     Run container in network:
+
+								     docker run --network secure-network nginx
+								     Key Takeaways
+
+								     Docker networking enables communication between containers.
+
+								     Containers receive IP addresses on Docker networks.
+
+								     Default network is bridge (docker0).
+
+								     User-defined networks allow container name resolution.
+
+								     Containers on different networks remain isolated.
+
+								     Host networking allows containers to share the host network stack.
+
+								     Final Networking Architecture
+								     Docker Host
+								     │
+								     ├── docker0 (bridge network)
+								     │      ├── login container
+								     │      └── logout container
+								     │
+								     ├── secure-network
+								     │      ├── login
+								     │      └── logout
+								     │
+								     └── host network container
+								            └── shares host network
