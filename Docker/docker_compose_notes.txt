@@ -1,0 +1,180 @@
+================================================================
+DOCKER COMPOSE - LEARNING NOTES
+================================================================
+
+----------------------------------------------------------------
+1. WHAT IS DOCKER COMPOSE?
+----------------------------------------------------------------
+- A tool to run MULTIPLE containers together using ONE command
+- You write one file (compose.yaml) that lists all containers needed
+- One command to start everything: docker compose up
+- One command to stop everything:  docker compose down
+
+Real world analogy:
+  - Without Compose = opening 3 terminals, running 3 docker run commands manually
+  - With Compose    = one file, one command, everything starts and connects
+
+----------------------------------------------------------------
+2. THE compose.yaml FILE
+----------------------------------------------------------------
+- This is the BOSS FILE — wires all containers together
+- It does NOT contain app logic
+- It just POINTS Docker to where images/dockerfiles are
+
+Two ways Docker gets an image:
+
+  image: mysql        → DOWNLOAD from DockerHub (no Dockerfile needed)
+  build: ./web        → BUILD from local Dockerfile in that folder
+
+----------------------------------------------------------------
+3. KEY FIELDS IN compose.yaml
+----------------------------------------------------------------
+
+  image:              → download image from DockerHub
+  build:              → build image from local Dockerfile
+  ports:              → port mapping (host:container)
+                        e.g. "81:5000" = your machine port 81 → container port 5000
+  environment:        → pass settings/passwords into container
+  depends_on:         → start this container ONLY AFTER listed containers are ready
+  restart: on-failure → auto restart container if it crashes
+  hostname:           → give container a name so other containers can find it
+
+----------------------------------------------------------------
+4. HANDS-ON PROJECT — Nginx + Node.js + Redis
+----------------------------------------------------------------
+
+Project Structure:
+  .
+  ├── compose.yaml          ← wires everything together
+  ├── nginx
+  │   ├── Dockerfile        ← how to build Nginx container
+  │   └── nginx.conf        ← Nginx config (load balancing rules)
+  └── web
+      ├── Dockerfile        ← how to build Node.js container
+      ├── package.json      ← Node.js dependencies
+      └── server.js         ← app logic (counts visits using Redis)
+
+Architecture:
+  User (browser/curl)
+        │
+        ▼
+     Nginx (port 80)         ← traffic cop / load balancer
+        │
+        ├──► web1 (Node.js, port 81) ──► Redis (visit counter)
+        │
+        └──► web2 (Node.js, port 82) ──► Redis (visit counter)
+
+What each service does:
+  - redis  → stores the visit count (shared between web1 and web2)
+  - web1   → Node.js app instance 1
+  - web2   → Node.js app instance 2 (same Dockerfile, second copy)
+  - nginx  → receives all traffic, splits between web1 and web2
+
+compose.yaml breakdown:
+
+  redis:
+      image: 'redislabs/redismod'   # download from DockerHub
+      ports:
+        - '6379:6379'
+
+  web1:
+      restart: on-failure
+      build: ./web                  # build from /web/Dockerfile
+      hostname: web1
+      ports:
+        - '81:5000'
+
+  web2:
+      restart: on-failure
+      build: ./web                  # same Dockerfile as web1, second instance
+      hostname: web2
+      ports:
+        - '82:5000'
+
+  nginx:
+      build: ./nginx                # build from /nginx/Dockerfile
+      ports:
+        - '80:80'
+      depends_on:
+        - web1
+        - web2                      # start nginx AFTER web1 and web2 are ready
+
+----------------------------------------------------------------
+5. COMMANDS USED
+----------------------------------------------------------------
+
+  docker compose up -d      → start all containers in background (-d = detached)
+  docker compose down       → stop and remove all containers
+  docker ps                 → list running containers
+  curl localhost:80         → test the app (same as hitting it in browser)
+
+  # test load balancing (hit 5 times)
+  for i in {1..5}; do curl localhost:80; echo; done
+
+----------------------------------------------------------------
+6. OUTPUT OBSERVED (PROOF IT WORKED)
+----------------------------------------------------------------
+
+  curl localhost:80  →  web1: Number of visits is: 1
+  curl localhost:80  →  web1: Number of visits is: 2
+  curl localhost:80  →  web2: Number of visits is: 3
+
+Key observations:
+  ✅ Load balancing works  — Nginx split traffic between web1 and web2
+  ✅ Redis shared memory   — web2 said "visits: 3" not "visits: 1"
+                             (it continued counting from where web1 left off)
+  ✅ All 4 containers up   — nginx, redis, web1, web2 all running
+
+----------------------------------------------------------------
+7. DOCKER PS OUTPUT EXPLAINED
+----------------------------------------------------------------
+
+  docker ps shows:
+  - CONTAINER ID  → unique ID of the container
+  - IMAGE         → which image was used
+  - PORTS         → port mapping (0.0.0.0:80->80 means accessible from anywhere)
+  - NAMES         → auto-generated name by Docker Compose
+
+  0.0.0.0 in port mapping = accessible from anywhere (public)
+
+----------------------------------------------------------------
+8. DOCKER COMPOSE vs KUBERNETES (SIMPLE DIFFERENCE)
+----------------------------------------------------------------
+
+  Docker Compose:
+  - Runs containers on ONE machine
+  - Simple, easy to learn
+  - Best for local development and small projects
+  - No auto-scaling, no auto-healing
+
+  Kubernetes:
+  - Runs containers across MANY machines
+  - Complex, steep learning curve
+  - Best for large production systems
+  - Auto-scaling, auto-healing, handles millions of users
+
+  Learning path:
+  Docker basics → Docker Compose → Kubernetes
+       ✅               ✅ (today)      (later)
+
+----------------------------------------------------------------
+9. NETWORKING CONCEPTS COVERED
+----------------------------------------------------------------
+
+  eth0:
+  - Name of the first network interface on Linux
+  - eth = Ethernet, 0 = first one
+  - Every interface has a MAC address (hardware ID)
+
+  MAC address:
+  - Unique hardware ID burned into the network card
+  - Format: 00:1A:2B:3C:4D:5E
+  - Different from eth0 (eth0 is the name, MAC is the ID)
+
+  Port mapping in Docker:
+  - "81:5000" = port 81 on your machine maps to port 5000 inside container
+  - 0.0.0.0 = accessible from any IP
+
+================================================================
+END OF NOTES
+================================================================
