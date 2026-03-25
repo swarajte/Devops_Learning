@@ -1,0 +1,160 @@
+==============================
+DOCKER MULTI-ARCH INTERVIEW NOTES
+==============================
+
+📌 WHAT IS MULTI-ARCH?
+
+Multi-architecture means building a Docker image that can run on different CPU types like:
+- AMD64 (x86_64) → EC2, laptops
+- ARM64 (aarch64) → Mac M1/M2, ARM EC2 (t4g)
+
+Instead of creating separate images, we create ONE image that works everywhere.
+
+
+--------------------------------
+📌 PROBLEM I FACED
+--------------------------------
+
+I built a Docker image on an AMD EC2 instance.
+
+When I tried to run the same image on an ARM EC2 instance, it failed with:
+
+"exec format error"
+
+Reason:
+The image was built only for AMD64, but the system was ARM64.
+
+
+--------------------------------
+📌 SOLUTION
+--------------------------------
+
+Used Docker buildx (BuildKit) to create a multi-architecture image.
+
+This allows building images for:
+- linux/amd64
+- linux/arm64
+
+Docker automatically selects the correct version based on the system.
+
+
+--------------------------------
+📌 KEY COMMANDS
+--------------------------------
+
+# Enable buildx
+docker buildx create --use
+docker buildx inspect --bootstrap
+
+# Enable cross-platform support
+docker run --privileged --rm tonistiigi/binfmt --install all
+
+# Build multi-arch image
+docker buildx build \
+--platform linux/amd64,linux/arm64 \
+-t <username>/multiarchdemo:multi \
+--push .
+
+# Verify architectures
+docker buildx imagetools inspect <image>
+
+# Run container
+docker run <image>
+
+
+--------------------------------
+📌 BUILDKIT & BUILDX
+--------------------------------
+
+BuildKit:
+- Modern Docker build engine
+- Faster and more efficient
+- Required for advanced features
+
+buildx:
+- CLI tool to use BuildKit
+- Enables multi-arch builds
+
+
+--------------------------------
+📌 DOCKER DESKTOP VS EC2
+--------------------------------
+
+Docker Desktop:
+- Everything pre-installed (buildx, BuildKit)
+- Easy setup
+
+EC2:
+- Minimal setup
+- buildx not available by default
+- Requires manual configuration
+- Closer to real production
+
+
+--------------------------------
+📌 ISSUES I DEBUGGED
+--------------------------------
+
+- docker buildx not found
+- Wrong binary downloaded (very small file)
+- Plugin path issues (Docker not detecting buildx)
+- Docker daemon not running
+- Architecture mismatch (exec format error)
+
+Fixes:
+- Installed docker-ce instead of docker.io
+- Linked buildx plugin correctly
+- Started Docker service
+- Enabled cross-platform builds
+
+
+--------------------------------
+📌 HOW DOCKER SELECTS IMAGE
+--------------------------------
+
+When we pull an image:
+
+docker pull <image>
+
+Docker checks system architecture:
+- If AMD → pulls amd64 version
+- If ARM → pulls arm64 version
+
+This is handled using a "manifest list".
+
+
+--------------------------------
+📌 INTERVIEW ANSWER (SHORT)
+--------------------------------
+
+"I built a Docker image that works on both AMD and ARM systems using buildx. I tested it on two EC2 instances with different architectures and verified that Docker automatically pulls the correct version."
+
+
+--------------------------------
+📌 INTERVIEW ANSWER (DETAILED)
+--------------------------------
+
+"Initially, I built a Docker image on an AMD EC2 instance, but it failed on an ARM instance with an exec format error. I understood that Docker images are architecture-specific. I used Docker buildx with BuildKit to create a multi-architecture image supporting both amd64 and arm64. I then tested it on both EC2 instances, and Docker automatically selected the correct image."
+
+
+--------------------------------
+📌 FINAL UNDERSTANDING
+--------------------------------
+
+Before:
+1 image → 1 architecture ❌
+
+After:
+1 image → multiple architectures ✅
+
+
+--------------------------------
+📌 KEY TAKEAWAY
+--------------------------------
+
+Build once → run anywhere (any CPU architecture)
+
+
+==============================
+END
+==============================

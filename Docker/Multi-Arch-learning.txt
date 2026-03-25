@@ -1,0 +1,118 @@
+# 🐳 Docker Multi-Architecture Demo (AMD64 + ARM64)
+
+## 📌 Overview
+
+This project demonstrates how to build and run a **multi-architecture Docker image** that works on both:
+
+* AMD64 (x86_64) systems
+* ARM64 (aarch64) systems
+
+The goal was to understand how Docker handles different CPU architectures and how to build portable images using `buildx`.
+
+---
+
+## 🧠 Problem Statement
+
+When a Docker image is built on one architecture (e.g., AMD64), it may fail to run on another architecture (e.g., ARM64).
+
+### Example Error:
+
+```
+exec format error
+```
+
+This happens due to CPU incompatibility.
+
+---
+
+## 🚀 Solution
+
+Used **Docker Buildx (BuildKit)** to build a multi-architecture image supporting both AMD64 and ARM64.
+
+---
+
+## ⚙️ Setup
+
+### 1. Enable buildx
+
+```bash
+docker buildx create --use
+docker buildx inspect --bootstrap
+```
+
+### 2. Enable cross-platform builds
+
+```bash
+docker run --privileged --rm tonistiigi/binfmt --install all
+```
+
+---
+
+## 🏗️ Build Multi-Arch Image
+
+```bash
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+    -t <dockerhub-username>/multiarchdemo:multi \
+      --push .
+      ```
+
+      ---
+
+      ## 🔍 Verify Architectures
+
+      ```bash
+      docker buildx imagetools inspect <dockerhub-username>/multiarchdemo:multi
+      ```
+
+      Expected output:
+
+      * linux/amd64
+      * linux/arm64
+
+      ---
+
+      ## 🧪 Testing
+
+      ### On AMD64 (Ubuntu EC2)
+
+      ```bash
+      docker run <image>
+      ```
+
+      ### On ARM64 (t4g EC2)
+
+      ```bash
+      docker run <image>
+      ```
+
+      ✅ Same image runs successfully on both systems.
+
+      ---
+
+      ## 🐞 Challenges Faced
+
+      * `docker buildx` not available initially
+      * Incorrect plugin installation (downloaded wrong binary)
+      * Plugin path issues (Docker not detecting buildx)
+      * Docker daemon not running
+      * Architecture mismatch errors (`exec format error`)
+
+      ---
+
+      ## 💡 Key Learnings
+
+      * Docker images are architecture-specific by default
+      * Multi-arch images use a **manifest list**
+      * Docker automatically pulls the correct image based on system architecture
+      * BuildKit + buildx enables advanced Docker builds
+      * EC2 setup reflects real production environments
+
+      ---
+
+      ## 🎯 Conclusion
+
+      Successfully built and tested a multi-architecture Docker image across different CPU architectures, simulating a real-world DevOps use case.
+
+      ---
+
