@@ -1,0 +1,27 @@
+Setup Guide: Install AWS CLI & Terraform on EC2 (Ubuntu)
+🔹 1. Update System
+sudo apt update && sudo apt upgrade -y
+
+☁️ Install AWS CLI (v2)
+🔹 Download AWS CLI
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+🔹 Install unzip
+sudo apt install unzip -y
+
+🔹 Unzip & Install
+unzip awscliv2.zip
+sudo ./aws/install
+
+🔹 Verify Installation
+aws --version
+
+🔹 Configure AWS
+aws configure
+
+Enter:
+
+Access Key
+Secret Key
+Region (e.g. ap-south-1)
+Output format → json
