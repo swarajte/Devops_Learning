@@ -1,0 +1,110 @@
+# AWS Config + Lambda (Custom Rule) Notes
+
+## 📌 What is AWS Config?
+
+AWS Config is a service that:
+
+* Tracks AWS resources
+* Records configuration changes
+* Checks compliance using rules
+
+👉 In short: *Automatic rule checker for AWS resources*
+
+---
+
+## 🎯 Why use AWS Config?
+
+* Detect misconfigurations
+* Improve security
+* Maintain compliance
+* Track infrastructure changes
+
+---
+
+## ⚙️ Key Concepts
+
+### Resource
+
+Any AWS service (EC2, S3, IAM, etc.)
+
+### Rule
+
+Condition to check resource configuration
+
+### Compliance
+
+* COMPLIANT → follows rule
+* NON_COMPLIANT → breaks rule
+
+---
+
+## 🔁 Working Flow
+
+1. Resource changes
+2. AWS Config detects change
+3. Rule is triggered
+4. Resource evaluated
+5. Result stored (COMPLIANT / NON_COMPLIANT)
+
+---
+
+## 🔥 Types of Rules
+
+### 1. Managed Rules
+
+* Provided by AWS
+* Easy to use
+
+### 2. Custom Rules
+
+* Created using AWS Lambda
+* Used for custom logic
+
+---
+
+## 🧠 Custom Rule (Lambda) Flow
+
+AWS Config → sends JSON → Lambda
+Lambda → checks logic → returns result
+
+---
+
+## 🧪 Lambda Testing
+
+* Use test JSON event
+* Simulate AWS Config input
+* No manual trigger required
+
+---
+
+## 🔐 Required Permissions (IAM Role)
+
+* ec2:DescribeInstances
+* config:PutEvaluations
+
+---
+
+## 💡 Example Use Case
+
+Check if EC2 has detailed monitoring enabled:
+
+* If enabled → COMPLIANT
+* If not → NON_COMPLIANT
+
+---
+
+## 🧹 Cleanup (Important)
+
+After testing:
+
+* Delete AWS Config rule
+* Keep Lambda for reuse
+* Optional: disable AWS Config / delete S3 bucket
+
+---
+
+## 🚀 Summary
+
+AWS Config + Lambda =
+👉 Automated compliance checking system for AWS infrastructure
+
