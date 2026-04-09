@@ -1,0 +1,65 @@
+# 🚀 AWS ALB + EC2 Project
+
+## 📌 Overview
+
+Built a simple highly available web app using:
+
+* Application Load Balancer (ALB)
+* 2 EC2 instances
+* Python HTTP server
+
+Traffic is distributed across instances to ensure availability.
+
+---
+
+## 🏗️ Architecture
+
+User → ALB → Target Group → EC2 → Python App
+
+---
+
+## ⚙️ What I Did
+
+* Launched 2 EC2 instances (HTTP enabled)
+* Deployed Python app on port 80
+* Created target group and registered instances
+* Configured ALB (HTTP listener)
+* Set up health checks (`/`)
+* Verified load balancing via ALB DNS
+
+---
+
+## 🌐 OSI Mapping (Key Insight)
+
+* **Layer 7** → ALB (HTTP routing)
+* **Layer 4** → TCP communication
+* **Layer 3** → IP routing (VPC)
+* **Layer 2** → MAC (internal network)
+
+---
+
+## 🔍 Key Learnings
+
+* ALB works at **Layer 7**
+* Target group must be **attached + healthy**
+* Health checks require valid HTTP response (200)
+* App must run on **0.0.0.0:80**
+* ALB communicates via **private network (VPC)**
+
+---
+
+## ⚠️ Issues Faced & Fixes
+
+* Targets showing **Unused** → fixed by attaching TG to ALB
+* Health check failures → fixed HTTP response headers
+* App binding issue → changed to `0.0.0.0`
+* App stopping → used `nohup`
+
+---
+
+## 🎯 Outcome
+
+* Implemented load balancing with AWS ALB
+* Achieved high availability with multiple EC2 instances
+* Understood real-world debugging + OSI concepts
+
