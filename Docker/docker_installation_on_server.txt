@@ -7,3 +7,11 @@ sudo usermod -a -G docker ubuntu
 
 
 The last command adds your user to docker group so you don't need sudo every time.
+
+
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo apt install unzip -y
+unzip awscliv2.zip
+sudo ./aws/install
+aws --version

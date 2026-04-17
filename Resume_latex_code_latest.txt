@@ -1,0 +1,111 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\pagestyle{empty}
+
+% ----------- BALANCED MARGINS -----------
+\addtolength{\oddsidemargin}{-0.3in}
+\addtolength{\evensidemargin}{-0.3in}
+\addtolength{\textwidth}{0.6in}
+\addtolength{\topmargin}{-0.3in}
+\addtolength{\textheight}{0.9in}
+
+\setlength{\tabcolsep}{0in}
+
+% ----------- SECTION FORMATTING -----------
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\titlerule \vspace{-4pt}]
+
+% ----------- BULLET SPACING -----------
+\setlist[itemize]{itemsep=3pt, topsep=3pt, leftmargin=*}
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\LARGE \textbf{Swaraj Telkhade}} \\ \vspace{8pt}
+    \textbf{DevOps Engineer} \\ \vspace{6pt}
+    \small
+    +91-8767685588 $|$
+    \href{mailto:swarajtelkhade@gmail.com}{swarajtelkhade@gmail.com} $|$
+    \href{https://www.linkedin.com/in/swaraj-telkhade/}{LinkedIn} $|$
+    \href{https://github.com/swarajte/}{GitHub}
+\end{center}
+
+%-----------SUMMARY-----------
+\section{Summary}
+DevOps Engineer with 2 years of experience in enterprise environments, specializing in CI/CD pipelines, Linux systems, and automation. Experienced in managing multi-environment deployments, SSL certificates, and debugging production issues. Currently expanding expertise in Docker, Kubernetes, and AWS.
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+
+\textbf{Amdocs} \hfill \textbf{July 2024 -- Present} \\
+\textit{DevOps Engineer (Technology Integration)} \vspace{4pt}
+
+\begin{itemize}
+    \item Automated environment monitoring using Shell/KornShell scripts and cron, reducing manual effort
+    \item Debugged Linux-based environments, resolving logs, services, and runtime issues to maintain uptime
+    \item Built and maintained Jenkins CI/CD pipelines for seamless multi-environment deployments
+    \item Automated SSL certificate validation and expiry alerts using OpenSSL and keytool
+    \item Enforced validation checks to eliminate configuration drift across environments
+    \item Diagnosed and resolved deployment and production failures, improving system reliability
+    \item Managed multi-server infrastructure including WebLogic-based deployments
+\end{itemize}
+
+%-----------PROJECTS-----------
+\section{Projects}
+
+\textbf{DevOps CI/CD Pipeline (In Progress)} \vspace{4pt}
+
+\begin{itemize}
+    \item Building a containerized application using Docker
+    \item Implementing CI/CD pipeline using Jenkins and GitHub Actions
+    \item Deploying application on AWS EC2
+    \item Exploring Kubernetes for container orchestration
+\end{itemize}
+
+\section{Skills}
+
+\begin{tabular}{p{4cm} p{12cm}}
+
+\textbf{DevOps \& CI/CD} & Jenkins, GitHub Actions, CI/CD Pipelines, Cron Jobs \\[6pt]
+
+\textbf{Cloud (AWS)} & EC2, S3, IAM, VPC, CloudWatch \\[6pt]
+
+\textbf{Containers \& Orchestration} & Docker, Kubernetes, Jenkins \\[6pt]
+
+\textbf{Scripting \& OS} & Linux, Bash, KornShell \\[6pt]
+
+\textbf{Security} & SSL Certificates, OpenSSL, Keytool \\[6pt]
+
+\textbf{Tools} & Git, GitHub, WebLogic Server \\[6pt]
+
+\textbf{Database} & Oracle 19c \\
+
+\end{tabular}
+
+%-----------EDUCATION-----------
+\section{Education}
+
+\textbf{Pune Institute of Computer Technology (PICT)} \hfill 2020 -- 2024 \\
+B.E Electronics and Telecommunications \\
+CGPA: 9.44
+
+%-----------ACHIEVEMENTS-----------
+\section{Achievements}
+
+\begin{itemize}
+    \item Solved 400+ problems on LeetCode and GeeksforGeeks
+    \item Achieved 5-star badge on HackerRank
+    \item Cleared JEE Advanced
+\end{itemize}
+
+\vspace{6pt}
+
+\end{document}
