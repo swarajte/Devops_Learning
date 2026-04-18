@@ -61,34 +61,14 @@ DevOps Engineer with 2 years of experience in enterprise environments, specializ
 %-----------PROJECTS-----------
 \section{Projects}
 
-\textbf{DevOps CI/CD Pipeline (In Progress)} \vspace{4pt}
+\textbf{Kubernetes Cluster Deployment on AWS (KOPS)} \vspace{4pt}
 
 \begin{itemize}
-    \item Building a containerized application using Docker
-    \item Implementing CI/CD pipeline using Jenkins and GitHub Actions
-    \item Deploying application on AWS EC2
-    \item Exploring Kubernetes for container orchestration
+    \item Built a production-like Kubernetes cluster on AWS EC2 using KOPS
+    \item Managed cluster lifecycle operations including create, update, and rolling updates
+    \item Configured and debugged networking, API server connectivity, and SSH access to cluster nodes
+    \item Resolved infrastructure issues related to security groups and cluster communication
 \end{itemize}
-
-\section{Skills}
-
-\begin{tabular}{p{4cm} p{12cm}}
-
-\textbf{DevOps \& CI/CD} & Jenkins, GitHub Actions, CI/CD Pipelines, Cron Jobs \\[6pt]
-
-\textbf{Cloud (AWS)} & EC2, S3, IAM, VPC, CloudWatch \\[6pt]
-
-\textbf{Containers \& Orchestration} & Docker, Kubernetes, Jenkins \\[6pt]
-
-\textbf{Scripting \& OS} & Linux, Bash, KornShell \\[6pt]
-
-\textbf{Security} & SSL Certificates, OpenSSL, Keytool \\[6pt]
-
-\textbf{Tools} & Git, GitHub, WebLogic Server \\[6pt]
-
-\textbf{Database} & Oracle 19c \\
-
-\end{tabular}
 
 %-----------EDUCATION-----------
 \section{Education}
