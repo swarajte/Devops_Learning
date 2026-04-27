@@ -9,6 +9,7 @@ This repository contains my hands-on learning journey of Kubernetes.
 - Deployments
 - Services & Networking
 - KOPS (Cluster Setup)
+- Ingress --> In progress 
 
 ## 🎯 Goal
 
