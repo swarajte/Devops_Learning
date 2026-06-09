@@ -1,0 +1,8 @@
+apiVersion: demo.com/v1
+kind: Website
+
+metadata:
+  name: my-site
+
+spec:
+  image: nginx
