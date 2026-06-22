@@ -1,0 +1,189 @@
+1. Helm
+2. Headless Service
+3. Kubernetes User Management
+4. KEDA
+5. Troubleshooting Day-1
+6. Troubleshooting Day-2
+7. Node Affinity / Taints / Tolerations
+8. Persistent Volumes
+9. Prometheus
+10. Grafana
+
+
+
+Okay so as of now i have covered below topics overall :
+
+
+
+i will start mentioning it below along with the amount of what i have grasped :
+
+
+
+1) SDLC : basics , role of devops there 
+
+2) Virtual machines and concept of virtulization & its relation with cloud (aws ec2 on physical server)
+
+3)basic of shell scripting (shebang, set -x,e,o, xargs, awk, curl,wget, traps and signals ) -- very basic, may need to revise it
+
+4) AWS basic -- reasons to move to aws infrastrtucture, version contol basics
+
+5) basic git commands
+
+6)AWS -- iam (users,policies,groups,Roles) -- basics
+
+7)EC2 -- why , what , ways to login , just know the type of ec2 (logged in one of the ec2 as well )
+
+8) VPC (basics)overall VPC architecture ,IGW, ELB, public/private subnet , Internet, route table, router, security groups, NAT Gateway, SNAT, NACLs...created VPC as well in aws....
+
+9) Route53 very basics
+
+10) AWS real time production grade project -- public/private subnet, in two AZs and also bastian server then login to private IP to private server, run python3 -m http.server 8000
+
+11) solver few scenerio based question on AWS 
+
+12)AWS S3 --basics, why what , security , bucket policy , 11' 9 s
+
+13)AWS CFT yaml , principle of IAC, drift detection, 
+
+14)AWS Codecommit, Codebuild , Codedeploy, Codepipeline -- basics , implemented a project where github is connected and it sense change in code and commit and creates docker image of it and uploads in dockerhub and then pulls that image in our one of the ec2 and runs it , encountered various issues here , even though i was watching and implementing using a video 
+
+15)AWS cloud watch - basics features , metrics and all , monitored for 1 ec2 as well
+
+16 ) AWS Lamda func, , basics, wrote func which detects use less EBS volumes and deletes it -- from watching video ofcourse ...!
+
+17)AWS Cloud front -- very basic -- CDN
+
+18)AWS ECR -- basics 
+
+
+
+
+
+STARTED DOCKER 
+
+
+
+ 
+1) container -- what , why , problems it solves, very basics of namespaces and cgroups , docker life cycle
+2) Files and folders in container
+3) docker Architectura
+4)dockerfile basics (disecting it to understand) (ADD vs ENTRYPOINT)
+5)basic docker commands
+6)Contanrizing a django application -- very basic 
+7)Multi-stage docker -- very basic 
+8)3 tier architecture
+9) Docker volumes and Bind container-- problem it solved , basic commands, to inspect volume, 
+10) Docker networking -- eth0, veth pair, flow from container to internet and backward as well  -- bridge, host, overlay n/w -- very basic, created custom bridge n/w as well
+11) docker interview questions revision
+12)Docker compose
+13) Basic Architecture of web nginx, docker compose up -d , DOCKER INIT, DOCKER Multi-architecture/platform buids (very basics )
+
+continued to AWS ECS -- Autohealing , autoscaling, advantages of ecs,
+
+AWS EKS as well and basic handson
+Secret management , system manager, 
+Teraform with AWS : used teraform here (very basic , dont know tf completely here, still followed whatever i could, ) -- teraform init, plan, apply, basic syntax understanding, 
+AWS config
+AWS Loadbalancer (very basic)
+7 layers of OSI -- basics
+then types of LB in AWS application, networkingm gateway
+AWS 3 tier arch implemented, basic on with asg. ecs, private , public subnet 2 AZs, RDS , LB
+
+
+STARTED Kubernetes here 
+
+1) basics ,problem it solved autohealing , autoscaling, single host , enteprise level support
+2) K8s Architecture
+3) K8s Distribution -- KOPS basic and implemented as well 
+4) K8s basic -- pods, why , what also created pods
+5) K8s Deployments, why , what mplemented as well 
+6) Services-- basics , types , cluster ip, nodeport, Loadbalancing, commands as well , tried its implementation in Minikube as well
+7) namespaces, RBAC, role of kubeproxy 
+8) Ingress , its reasoning, How ingress works , types of ingress (path based, host-based ingress ) implementation as well
+9) RBAC basics 
+10) Custom resources in K8s -- CRD, CR, Custom controller
+11) config maps (envt var, mounted files), and secrets
+
+here is my learning github repo , which i maintained :
+
+https://github.com/swarajte/Devops_Learning
+
+go through it
+
+coming video in K8s playlist is K8s
+
+
+after that i have below :
+
+
+and now tell me what should i do ?
+
+should i continue this or pickup any other udemy course , as of now i followed Abhishek veermalla for all the learnig till now 
+
+
+
+
+16
+DAY-42 | KUBERNETES MONITORING USING PROMETHEUS & GRAFANA LIVE DEMO ĮSTEPS IN...
+Abhishek. Veeramalla
+33:08
+17
+Common Kubernetes Real Time Challenges | 3 Production Scenarios
+Abhishek. Veeramalla
+KUBERNETES
+40:24
+18
+1:14:26
+DEPLOYMENT STRATEGIES
+19
+51:58
+32:57
+42:03
+45:50
+23
+EPISODE
+25:58
+EFTSODE
+24
+25
+23:33
+INTIO IH AD MINS
+1:04:23
+20
+HOW KUBERNETES CLUSTERS
+IN REAL TIN
+35:07
+CLUSTER ECUPY
+27
+45:48
+How to upgrade Kubernetes cluster in Prod? | Complete Process with Demo and Interview...
+Abhishek. Veeramalla
+Kubernetes End to End project on EKS | EKS Install and app deploy with Ingress | #abhishekveeramalla
+Abhishek. Veeramalla
+Kubernetes Deployment Strategies with Demos | Canary | Blue Green | Rolling Update
+Abhishek. Veeramalla
+Day-1 | Kubernetes Troubleshooting | ImagePullBackOff - How to use Private Images in...
+20
+MART
+Abhishek. Veeramalla
+Day-2 | Kubernetes Troubleshooting | CrashLoopBackOff with 3 real time scenarios....
+21
+Abhishek. Veeramalla
+22
+Day-3 | Node Selector, Node Affinity, Taints and Tolerations | Kubernetes Zero to Hero
+Abhishek. Veeramalla
+Day-4| StatefulSet with Persistent Volume not working after Cloud Migration | How to fix it?
+Abhishek. Veeramalla
+Secure your Database using Network Policies | Learn Practically with real time example
+Abhishek. Veeramalla
+Service Mesh explained in 60 minutes | Istio MTLS and Canary Demo | Complete beginner level guide
+Abhishek. Veeramalla
+SECURE KUBERNETES LIKE A PRO | HOW DEVSECOPS ENGINEERS SECURE Kubernetes ?...
+Abhishek. Veeramalla
+Enforce Kubernetes Security with Kyverno | RealTime #kubernetes project #abhishekveeramalla #devops
+Abhishek. Veeramalla
+
+
+
+
+
