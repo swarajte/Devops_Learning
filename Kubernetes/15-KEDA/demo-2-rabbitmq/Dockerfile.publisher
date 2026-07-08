@@ -1,0 +1,14 @@
+FROM python:3.11-slim
+WORKDIR /app
+
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+ARG NO_PROXY
+ENV HTTP_PROXY=$HTTP_PROXY
+ENV HTTPS_PROXY=$HTTPS_PROXY
+ENV NO_PROXY=$NO_PROXY
+
+RUN pip install --no-cache-dir pika
+COPY publisher.py .
+ENTRYPOINT ["python", "publisher.py"]
+CMD ["50"]
