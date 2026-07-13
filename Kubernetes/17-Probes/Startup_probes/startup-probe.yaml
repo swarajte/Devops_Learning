@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: startup-probe-demo
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: startup-demo
+
+  template:
+    metadata:
+      labels:
+        app: startup-demo
+
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+
+        ports:
+        - containerPort: 80
+
+        startupProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/started
+
+          initialDelaySeconds: 0
+          periodSeconds: 2
+          failureThreshold: 10
