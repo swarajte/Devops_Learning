@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: nginx-node-selector
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      labels:
+        app: nginx
+
+    spec:
+      nodeSelector:
+        workload: frontend
+
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
