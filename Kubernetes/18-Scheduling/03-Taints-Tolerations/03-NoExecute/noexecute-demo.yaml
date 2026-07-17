@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: noexecute-demo
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: noexecute
+
+  template:
+    metadata:
+      labels:
+        app: noexecute
+
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: multinode-worker2
+
+      containers:
+      - name: nginx
+        image: nginx
