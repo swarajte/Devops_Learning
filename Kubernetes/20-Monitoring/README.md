@@ -1,35 +1,28 @@
 # Kubernetes Monitoring
 
-## Completed
+This module covers monitoring in Kubernetes using Prometheus and Grafana.
 
-- Monitoring Fundamentals
-- Metrics
+## Topics Covered
+
+### Theory
+
 - Prometheus Architecture
-- Exporters
-- node-exporter
-- kube-state-metrics
-- Pushgateway
-- Prometheus Installation
-- Grafana Installation
-- Prometheus UI
-- Grafana UI
-- PromQL Basics
-- Data Sources
-- Port Forwarding
-- SSH Tunneling
-- Basic Troubleshooting
-
----
-
-## Pending
-
-- Grafana Dashboards
-- Community Dashboards
-- Panels
-- Variables
-- Dashboard Customization
+- Scraping
+- Jobs
+- Targets
+- Kubernetes Service Discovery
+- Labels
+- Important Metrics
+- Metric Types
+- PromQL
 - Alertmanager
-- Alert Rules
-- Alert Notifications
-- Recording Rules
-- Production Best Practices
+- Grafana
+
+### Practical
+
+- Installing Prometheus using Helm
+- Port Forwarding
+- Exploring Targets
+- Understanding Prometheus Configuration
+- Exploring Metrics
+
