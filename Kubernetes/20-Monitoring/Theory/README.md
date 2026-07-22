@@ -1,16 +1,43 @@
-# Theory
+# Monitoring Theory
 
-This directory contains all conceptual topics related to Kubernetes Monitoring.
+This folder contains the conceptual understanding of Kubernetes Monitoring using Prometheus, Grafana, and Alertmanager.
 
-## Files
+## Contents
 
-1. Prometheus Architecture
-2. Scraping, Jobs & Targets
-3. Service Discovery
-4. Labels
-5. Important Metrics
-6. Metric Types
-7. PromQL *(Coming Next)*
-8. Alertmanager *(Coming Next)*
-9. Grafana *(Coming Next)*
+### 01. Prometheus Fundamentals
+- Why Monitoring
+- Prometheus Architecture
+- Pull Model
+- Exporters
+- Scraping
+- Service Discovery
+- Labels
+- Metrics
 
+### 02. Metric Types
+- Counter
+- Gauge
+- Histogram
+- Summary
+- Comparison
+
+### 03. PromQL
+- Instant & Range Vectors
+- Label Filtering
+- Aggregation
+- Functions
+- Real-world Queries
+
+### 04. Grafana *(Pending)*
+- Architecture
+- Dashboards
+- Panels
+- Variables
+- Data Sources
+
+### 05. Alertmanager *(Pending)*
+- Alert Rules
+- Routing
+- Grouping
+- Receivers
+- Notifications
