@@ -6,7 +6,7 @@ As Terraform projects grow, writing all infrastructure in a single `main.tf` fil
 
 Terraform **Modules** solve this problem by allowing us to write infrastructure once and reuse it multiple times.
 
-A module is nothing but a **reusable collection of Terraform configuration files**.
+A **Terraform Module** is a reusable collection of Terraform configuration files that creates a logical piece of infrastructure.
 
 ---
 
@@ -26,7 +26,7 @@ Every application requires:
 - Security Group
 - IAM Role
 
-Without modules, we would write the same Terraform code for every application.
+Without modules, we would write the same Terraform code repeatedly.
 
 ```
 Application 1
@@ -48,20 +48,20 @@ Security Group
 IAM Role
 ```
 
-This leads to:
+Problems:
 
 - Duplicate code
 - Difficult maintenance
 - Large Terraform files
 - Higher chances of mistakes
 
-Instead, we create the infrastructure once inside a module and reuse it.
+Instead, create the infrastructure once inside a module and reuse it.
 
 ---
 
 # What is a Terraform Module?
 
-A **Terraform Module** is a reusable collection of Terraform configuration files that creates a logical piece of infrastructure.
+A **Terraform Module** is a reusable collection of Terraform configuration files.
 
 A module can contain:
 
@@ -70,11 +70,11 @@ A module can contain:
 - Outputs
 - Locals
 
-The same module can be used multiple times by passing different input values.
+The same module can be reused multiple times by passing different input values.
 
 ---
 
-# Real Life Example
+# Real-Life Example
 
 Suppose your company has three applications.
 
@@ -86,9 +86,9 @@ Inventory Service
 User Service
 ```
 
-Each application needs one EC2 instance.
+Each application requires an EC2 instance.
 
-Instead of writing EC2 code three times:
+Instead of writing the same code three times:
 
 ```
 EC2
@@ -104,35 +104,24 @@ modules/
 └── ec2/
 ```
 
-Then simply call it multiple times.
+Then use it multiple times.
 
 ```hcl
 module "payment" {
-
   source = "./modules/ec2"
-
   instance_name = "payment-server"
-
 }
 
 module "inventory" {
-
   source = "./modules/ec2"
-
   instance_name = "inventory-server"
-
 }
 
 module "user" {
-
   source = "./modules/ec2"
-
   instance_name = "user-server"
-
 }
 ```
-
-The module code remains the same.
 
 Only the input values change.
 
@@ -147,76 +136,61 @@ Terraform/
 
 └── modules/
 
-      └── ec2/
+    └── ec2/
 
-            ├── main.tf
-
-            ├── variables.tf
-
-            └── outputs.tf
+        ├── main.tf
+        ├── variables.tf
+        └── outputs.tf
 ```
 
 ---
 
-# What Do We Write Inside a Module?
+# What Does a Module Contain?
 
-A module contains everything required to create a logical infrastructure component.
+A module represents a **logical infrastructure component**.
 
 Example:
 
 ```
 EC2 Module
 
-├── Security Group
-
 ├── EC2 Instance
-
+├── Security Group
 ├── IAM Role
-
 └── EBS Volume
 ```
 
-These resources together create one complete EC2 server.
-
-Similarly,
+Another example:
 
 ```
 VPC Module
 
 ├── VPC
-
-├── Public Subnet
-
-├── Private Subnet
-
+├── Public Subnets
+├── Private Subnets
 ├── Internet Gateway
-
 ├── NAT Gateway
-
 └── Route Tables
 ```
 
-Notice that a module represents a **logical component**, not necessarily a single AWS resource.
+A module does **not** have to represent a single AWS resource.
 
 ---
 
 # Module Communication
 
-Modules communicate with the root module using:
+Terraform modules communicate using **Variables** and **Outputs**.
 
-## 1. Variables (Input)
+## Variables (Inputs)
 
-Variables receive values from the root module.
-
-Example:
+The Root Module passes values into the Child Module.
 
 ```hcl
 module "ec2_instance" {
 
   source = "./modules/ec2_instance"
 
-  ami_value = "ami-xxxxxxxx"
-
+  ami_value           = "ami-xxxxxxxx"
   instance_type_value = "t3.micro"
 
 }
@@ -232,94 +206,91 @@ variable "instance_type_value" {}
 
 ---
 
-## 2. Resources
+## Resources
 
-Resources create the actual infrastructure.
-
-Example:
+Resources create the infrastructure.
 
 ```hcl
 resource "aws_instance" "example" {
 
-    ami = var.ami_value
-
-    instance_type = var.instance_type_value
+  ami           = var.ami_value
+  instance_type = var.instance_type_value
 
 }
 ```
 
 ---
 
-## 3. Outputs
+## Outputs
 
-Outputs return useful information back to the root module.
+Outputs send values back to the Root Module.
 
 Inside module:
 
 ```hcl
 output "public_ip_address" {
 
-    value = aws_instance.example.public_ip
+  value = aws_instance.example.public_ip
 
 }
 ```
 
-Root module:
+Root Module:
 
 ```hcl
 output "PUBLIC_IP_FOR_EC2" {
 
-    value = module.ec2_instance.public_ip_address
+  value = module.ec2_instance.public_ip_address
 
 }
 ```
 
 ---
 
-# Module Flow
+# Module Communication Flow
 
 ```
-                 Root Module
+            Root Module
 
-                      │
+                 │
 
-               Pass Variables
+          Pass Variables
 
-                      │
+                 │
 
-                      ▼
+                 ▼
 
-                Terraform Module
+           Child Module
 
-                      │
+                 │
 
-        Creates Infrastructure
+      Creates Infrastructure
 
-                      │
+                 │
 
-                      ▼
+                 ▼
 
-               Returns Outputs
+          Returns Outputs
 
-                      │
+                 │
 
-                      ▼
+                 ▼
 
-                 Root Module
+            Root Module
 ```
 
 ---
 
-# Hands-on 1 - Basic Module
+# Hands-on 1 – Basic Module
 
-Created a very simple module.
+Created a simple module.
 
 ```
 modules/
 
 └── greeting/
 
-      └── main.tf
+    └── main.tf
 ```
 
 Module:
@@ -327,23 +298,23 @@ Module:
 ```hcl
 output "message" {
 
-    value = "Hello from Module!"
+  value = "Hello from Module!"
 
 }
 ```
 
-Root module:
+Root Module:
 
 ```hcl
 module "greeting" {
 
-    source = "./modules/greeting"
+  source = "./modules/greeting"
 
 }
 
 output "module_message" {
 
-    value = module.greeting.message
+  value = module.greeting.message
 
 }
 ```
@@ -354,57 +325,219 @@ Output:
 Hello from Module!
 ```
 
-Purpose:
-
-Understand how Terraform calls a module and retrieves outputs.
-
 ---
 
-# Hands-on 2 - EC2 Module
+# Hands-on 2 – Custom EC2 Module
 
 Created a reusable EC2 module.
 
-Module accepts:
+Inputs:
 
 - AMI ID
 - Instance Type
 - Subnet ID
 
-Root module:
-
 ```hcl
 module "ec2_instance" {
 
-    source = "./modules/ec2_instance"
+  source = "./modules/ec2_instance"
 
-    ami_value = "ami-xxxxxxxx"
-
-    instance_type_value = "t3.micro"
-
-    subnet_id_value = "subnet-xxxxxxxx"
+  ami_value           = "ami-xxxxxxxx"
+  instance_type_value = "t3.micro"
+  subnet_id_value     = "subnet-xxxxxxxx"
 
 }
 ```
-
-Module creates:
-
-- EC2 Instance
-
-Module returns:
-
-- Public IP Address
 
 Output:
 
 ```hcl
 output "PUBLIC_IP_FOR_EC2" {
 
-    value = module.ec2_instance.public_ip_address
+  value = module.ec2_instance.public_ip_address
 
 }
 ```
 
-Successfully created an EC2 instance using a custom Terraform module.
+Successfully launched an EC2 instance using a custom Terraform module.
+
+---
+
+# Terraform Registry Modules
+
+Writing your own modules is useful, but many common infrastructure components are already available on the **Terraform Registry**.
+
+Terraform Registry is an online repository of reusable Terraform modules maintained by HashiCorp, cloud providers, and the community.
+
+Instead of creating your own EC2 module:
+
+```hcl
+source = "./modules/ec2"
+```
+
+You can use a Registry Module:
+
+```hcl
+source = "terraform-aws-modules/ec2-instance/aws"
+```
+
+---
+
+# How Registry Modules Work
+
+When you run:
+
+```bash
+terraform init
+```
+
+Terraform:
+
+1. Reads the module source.
+2. Connects to the Terraform Registry.
+3. Downloads the module.
+4. Stores it locally.
+5. Uses the local copy during `terraform plan` and `terraform apply`.
+
+```
+Terraform Registry
+
+        │
+
+        ▼
+
+terraform init
+
+        │
+
+        ▼
+
+Downloads Module
+
+        │
+
+        ▼
+
+.terraform/modules/
+
+        │
+
+        ▼
+
+terraform plan / apply
+```
+
+Registry modules are downloaded only once (unless the version changes or you reinitialize).
+
+Terraform executes the **local downloaded copy**, not the code directly from the internet.
+
+---
+
+# Local Module vs Registry Module
+
+| Local Module | Registry Module |
+|--------------|-----------------|
+| Created by us | Created by the community |
+| Stored inside the project | Downloaded automatically |
+| `source = "./modules/ec2"` | `source = "terraform-aws-modules/ec2-instance/aws"` |
+| We maintain it | Community maintains it |
+
+---
+
+# Hands-on 3 – Registry Module
+
+Used the official EC2 Registry Module.
+
+```hcl
+module "ec2" {
+
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "6.4.0"
+
+  name = "terraform-registry-demo"
+
+  ami           = "ami-xxxxxxxx"
+  instance_type = "t3.micro"
+  subnet_id     = "subnet-xxxxxxxx"
+
+}
+```
+
+During `terraform init`:
+
+- Module downloaded from Terraform Registry.
+- Stored inside:
+
+```
+.terraform/modules/
+```
+
+During `terraform plan`:
+
+Terraform automatically planned:
+
+- EC2 Instance
+- Security Group
+- IPv4 Egress Rule
+- IPv6 Egress Rule
+
+Even though only a few input values were provided.
+
+This demonstrates how Registry Modules encapsulate complex infrastructure behind a simple interface.
+
+---
+
+# Module Lifecycle
+
+```
+            Write Module Call
+
+                  │
+
+                  ▼
+
+          terraform init
+
+                  │
+
+                  ▼
+
+Download Module from Registry
+
+                  │
+
+                  ▼
+
+      .terraform/modules/
+
+                  │
+
+                  ▼
+
+Read:
+
+• main.tf
+• variables.tf
+• outputs.tf
+
+                  │
+
+                  ▼
+
+terraform plan
+
+                  │
+
+                  ▼
+
+terraform apply
+
+                  │
+
+                  ▼
+
+Infrastructure Created
+```
 
 ---
 
@@ -412,32 +545,36 @@ Successfully created an EC2 instance using a custom Terraform module.
 
 - Code Reusability
 - Cleaner Project Structure
-- Less Duplicate Code
 - Easier Maintenance
 - Standardized Infrastructure
 - Better Team Collaboration
+- Less Duplicate Code
 - Easier Scaling
+- Faster Development using Registry Modules
 
 ---
 
 # Best Practices
 
 - Keep modules focused on one logical infrastructure component.
-- Use variables for configurable values.
+- Keep provider configuration in the Root Module.
+- Use variables instead of hardcoded values.
 - Return useful values using outputs.
-- Avoid hardcoding values inside modules.
-- Keep provider configuration in the root module.
 - Use meaningful module names.
+- Version pin Registry Modules.
+- Prefer well-maintained Registry Modules for common infrastructure.
 
 ---
 
 # Key Takeaways
 
-- Modules help reuse Terraform code.
-- A module is a reusable collection of Terraform configuration files.
+- A Terraform Module is a reusable collection of Terraform configuration files.
 - Modules communicate using Variables and Outputs.
-- A module can contain multiple related resources.
-- The same module can be used multiple times with different input values.
+- Modules represent logical infrastructure components.
+- Local Modules are written and maintained by your team.
+- Registry Modules are downloaded automatically from the Terraform Registry.
+- Registry Modules are stored locally inside `.terraform/modules`.
+- Terraform executes the downloaded local copy during `plan` and `apply`.
 
 ---
 
@@ -445,13 +582,13 @@ Successfully created an EC2 instance using a custom Terraform module.
 
 ### What is a Terraform Module?
 
-A Terraform Module is a reusable collection of Terraform configuration files that creates a logical infrastructure component.
+A reusable collection of Terraform configuration files that creates a logical infrastructure component.
 
 ---
 
 ### Why do we use Modules?
 
-To reduce duplicate code, improve maintainability, organize infrastructure, and promote reusability.
+To improve reusability, reduce duplicate code, simplify maintenance, and organize infrastructure.
 
 ---
 
@@ -464,42 +601,65 @@ To reduce duplicate code, improve maintainability, organize infrastructure, and 
 
 ---
 
-### How does the Root Module communicate with a Child Module?
+### How do Root Modules communicate with Child Modules?
 
-- Variables → Send data to the module.
+- Variables → Send data into the module.
 - Outputs → Receive data from the module.
 
 ---
 
-### Can a Module contain multiple resources?
+### What is Terraform Registry?
 
-Yes.
+Terraform Registry is an online repository of reusable Terraform modules maintained by HashiCorp and the community.
 
-For example, an EC2 module can include:
+---
 
-- Security Group
-- EC2 Instance
-- IAM Role
-- EBS Volume
+### What happens during `terraform init` for Registry Modules?
 
-All of these together represent one logical infrastructure component.
+Terraform downloads the module from the Registry into `.terraform/modules` and uses the downloaded copy during `terraform plan` and `terraform apply`.
+
+---
+
+### Where are Registry Modules stored?
+
+```
+.terraform/modules/
+```
+
+---
+
+### Why should we pin module versions?
+
+To ensure consistent, predictable deployments and avoid unexpected behavior caused by newer module releases.
 
 ---
 
 # Summary
 
 ```
-                 Write Once
+                  Write Once
 
-                Terraform Module
+               Terraform Module
 
-                      │
+                     │
 
-        Reuse Multiple Times
+     ┌───────────────┴───────────────┐
 
-      Payment     Inventory     User
+     ▼                               ▼
 
-           Different Input Values
+ Local Module                 Registry Module
 
-                  Same Module
+ Written by Us           Downloaded from Registry
+
+     │                               │
+
+     └───────────────┬───────────────┘
+
+                     ▼
+
+            Reuse Everywhere
+
+        Different Inputs
+
+             Same Module
 ```
