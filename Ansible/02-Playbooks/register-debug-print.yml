@@ -1,0 +1,20 @@
+---
+- name: Debug hostname and uptime messages demo
+  hosts: all
+
+  tasks:
+    - name: Get hostname
+      command: hostname
+      register: hostname_result
+
+    - name: Display Hostname 
+      debug:
+        msg: "Hostname : {{hostname_result.stdout}}"
+          
+    - name: Check server uptime
+      command: uptime
+      register: uptime_result
+
+    - name: Display uptime
+      debug:
+        msg: "Server uptime is: {{ uptime_result.stdout }}"

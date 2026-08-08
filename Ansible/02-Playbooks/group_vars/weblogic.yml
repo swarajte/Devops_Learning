@@ -1,0 +1,3 @@
+app_name: weblogic
+app_port: 7001
+environment: development

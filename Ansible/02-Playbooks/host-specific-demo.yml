@@ -1,0 +1,9 @@
+---
+- name: Host Variable Demo
+  hosts: weblogic
+
+  tasks:
+
+  - name: Display application directory
+    debug:
+      msg: "Application directory is {{ app_dir }}"

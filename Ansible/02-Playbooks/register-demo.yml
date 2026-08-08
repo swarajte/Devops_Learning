@@ -1,0 +1,13 @@
+---
+- name: Register Demo
+  hosts: all
+
+  tasks:
+
+    - name: Get hostname
+      command: hostname
+      register: hostname_result
+
+    - name: Display hostname
+      debug:
+        var: hostname_result

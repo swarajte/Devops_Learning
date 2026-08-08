@@ -1,0 +1,13 @@
+- name: My First Ansible Playbook
+  hosts: all
+
+  tasks:
+
+    - name: Get hostname
+      command: hostname
+
+    - name: Get uptime
+      command: uptime
+
+    - name: Get current user
+      command: whoami

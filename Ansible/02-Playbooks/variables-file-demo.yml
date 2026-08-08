@@ -1,0 +1,19 @@
+---
+- name: Variables with File Module
+  hosts: all
+
+  vars:
+    demo_dir: /tmp/ansible-demo
+    demo_file: /tmp/ansible-demo/hello.txt
+
+  tasks:
+
+  - name: Create demo directory
+    file:
+      path: "{{ demo_dir }}"
+      state: directory
+
+  - name: Create demo file
+    file:
+      path: "{{ demo_file }}"
+      state: touch

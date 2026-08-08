@@ -1,0 +1,22 @@
+---
+- name: Ansible Variables Demo
+  hosts: all
+
+  vars:
+    app_name: weblogic
+    app_version: "14.1.2"
+    app_dir: /opt/weblogic
+
+  tasks:
+
+  - name: Display application name
+    debug:
+      msg: "Application: {{ app_name }}"
+
+  - name: Display application version
+    debug:
+      msg: "Version: {{ app_version }}"
+
+  - name: Display application directory
+    debug:
+      msg: "Directory: {{ app_dir }}"

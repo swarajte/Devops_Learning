@@ -1,0 +1,17 @@
+---
+- name: Group Variables Demo
+  hosts: weblogic
+
+  tasks:
+
+  - name: Display application name
+    debug:
+      msg: "Application: {{ app_name }}"
+
+  - name: Display application port
+    debug:
+      msg: "Port: {{ app_port }}"
+
+  - name: Display environment
+    debug:
+      msg: "Environment: {{ environment }}"
